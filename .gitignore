@@ -1,0 +1,10 @@
+ros2_ws/build/
+ros2_ws/log/
+ros2_ws/install/
+
+.DS_Store
+
+# Colcon custom files
+COLCON_IGNORE
+AMENT_IGNORE
+
