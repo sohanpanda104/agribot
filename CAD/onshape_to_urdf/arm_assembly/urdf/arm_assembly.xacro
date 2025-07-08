@@ -1,0 +1,359 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:include filename="$(find arm_assembly_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find arm_assembly_description)/urdf/arm_assembly.trans" />
+<xacro:include filename="$(find arm_assembly_description)/urdf/arm_assembly.gazebo" />
+
+
+  <!-- Link dcmotor -->
+  <link name="dcmotor">
+    <inertial>
+      <origin xyz="2.29639e-05 -9.97032e-09 0.0848675" rpy="0 0 0"/>
+      <mass value="1.18635"/>
+      <inertia ixx="0.00111316" ixy="3.28229e-11" ixz="-1.39348e-06" iyy="0.001113" iyz="4.61981e-10" izz="0.000283958"/>
+    </inertial>
+    <!-- Part mechenical_lock -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//mechenical_lock.stl"/>
+      </geometry>
+      <material name="mechenical_lock_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//mechenical_lock.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part dcmotor -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//dcmotor.stl"/>
+      </geometry>
+      <material name="dcmotor_material">
+        <color rgba="0.776471 0.756863 0.737255 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//dcmotor.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link motor_shaft -->
+  <link name="motor_shaft">
+    <inertial>
+      <origin xyz="0.124219 -0.00145334 -0.0293684" rpy="0 0 0"/>
+      <mass value="0.299432"/>
+      <inertia ixx="8.47911e-05" ixy="2.77625e-05" ixz="0.000179333" iyy="0.00189854" iyz="-4.35859e-06" izz="0.00188224"/>
+    </inertial>
+    <!-- Part motor_mount -->
+    <visual>
+      <origin xyz="0 0 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_mount.stl"/>
+      </geometry>
+      <material name="motor_mount_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_mount.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part link1 -->
+    <visual>
+      <origin xyz="0.00270197 5e-05 0.135" rpy="3.14159 4.93958e-44 2.72157e-29"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//link1.stl"/>
+      </geometry>
+      <material name="link1_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00270197 5e-05 0.135" rpy="3.14159 4.93958e-44 2.72157e-29"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//link1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor_shaft -->
+    <visual>
+      <origin xyz="0 0 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_shaft.stl"/>
+      </geometry>
+      <material name="motor_shaft_material">
+        <color rgba="0.792157 0.819608 0.933333 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_shaft.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part servo_mount -->
+    <visual>
+      <origin xyz="0.00350197 0.00594864 0.135272" rpy="3.10669 1.13602e-14 -3.96706e-16"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_mount.stl"/>
+      </geometry>
+      <material name="servo_mount_material">
+        <color rgba="0.501961 0.501961 0.501961 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00350197 0.00594864 0.135272" rpy="3.10669 1.13602e-14 -3.96706e-16"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_mount.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part extrusion_mount -->
+    <visual>
+      <origin xyz="-5.20417e-17 1.16567e-31 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//extrusion_mount.stl"/>
+      </geometry>
+      <material name="extrusion_mount_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-5.20417e-17 1.16567e-31 0.135" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//extrusion_mount.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part servo -->
+    <visual>
+      <origin xyz="0.00350197 0.00594864 0.135272" rpy="3.10669 1.16211e-14 7.07643e-15"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo.stl"/>
+      </geometry>
+      <material name="servo_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00350197 0.00594864 0.135272" rpy="3.10669 1.16211e-14 7.07643e-15"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link servo_to_extrusion_mount -->
+  <link name="servo_to_extrusion_mount">
+    <inertial>
+      <origin xyz="0.120251 0.00657792 -0.0196128" rpy="0 0 0"/>
+      <mass value="0.245862"/>
+      <inertia ixx="0.000112353" ixy="-0.000271886" ixz="1.29226e-05" iyy="0.00327681" iyz="7.07004e-07" izz="0.00332815"/>
+    </inertial>
+    <!-- Part extrusion_mount_2 -->
+    <visual>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 3.82799e-16 -1.043e-16"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//extrusion_mount_2.stl"/>
+      </geometry>
+      <material name="extrusion_mount_2_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 3.82799e-16 -1.043e-16"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//extrusion_mount_2.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part link2 -->
+    <visual>
+      <origin xyz="-0.17395 0.1802 0.02365" rpy="1.5708 4.08714e-16 -5.11046e-17"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//link2.stl"/>
+      </geometry>
+      <material name="link2_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.17395 0.1802 0.02365" rpy="1.5708 4.08714e-16 -5.11046e-17"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//link2.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part servo_horn -->
+    <visual>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 4.55532e-16 1.83211e-30"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_horn.stl"/>
+      </geometry>
+      <material name="servo_horn_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 4.55532e-16 1.83211e-30"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_horn.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor_roll -->
+    <visual>
+      <origin xyz="0.2275 -2.5e-05 -0.02005" rpy="-1.5708 -1.59519e-15 1.5708"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_roll.stl"/>
+      </geometry>
+      <material name="motor_roll_material">
+        <color rgba="0.996078 0.996078 1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.2275 -2.5e-05 -0.02005" rpy="-1.5708 -1.59519e-15 1.5708"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_roll.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part servo_to_extrusion_mount -->
+    <visual>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 3.93044e-16 -1.23917e-20"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_to_extrusion_mount.stl"/>
+      </geometry>
+      <material name="servo_to_extrusion_mount_material">
+        <color rgba="0.627451 0.627451 0.627451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.17395 0.1802 0.0237" rpy="1.5708 3.93044e-16 -1.23917e-20"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//servo_to_extrusion_mount.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part top_plate -->
+    <visual>
+      <origin xyz="0.2275 -2.5e-05 -0.02005" rpy="-1.5708 -1.65199e-15 1.5708"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//top_plate.stl"/>
+      </geometry>
+      <material name="top_plate_material">
+        <color rgba="0.996078 0.996078 1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.2275 -2.5e-05 -0.02005" rpy="-1.5708 -1.65199e-15 1.5708"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//top_plate.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link motor_bracket -->
+  <link name="motor_bracket">
+    <inertial>
+      <origin xyz="-0.0326712 2.5336e-17 -0.0356094" rpy="0 0 0"/>
+      <mass value="0.04072"/>
+      <inertia ixx="1.1986e-05" ixy="5.3223e-21" ixz="-2.02836e-06" iyy="1.1069e-05" iyz="-1.87908e-09" izz="7.65719e-06"/>
+    </inertial>
+    <!-- Part motor_bracket -->
+    <visual>
+      <origin xyz="2.42861e-16 0.062 -0.02325" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_bracket.stl"/>
+      </geometry>
+      <material name="motor_bracket_material">
+        <color rgba="0.996078 0.996078 1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="2.42861e-16 0.062 -0.02325" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_bracket.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor_pitch -->
+    <visual>
+      <origin xyz="-9.02056e-17 0.062 -0.02325" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_pitch.stl"/>
+      </geometry>
+      <material name="motor_pitch_material">
+        <color rgba="0.996078 0.996078 1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-9.02056e-17 0.062 -0.02325" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//motor_pitch.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link camera_support -->
+  <link name="camera_support">
+    <inertial>
+      <origin xyz="0.000586805 -0.0190184 -0.02165" rpy="0 0 0"/>
+      <mass value="0.0054893"/>
+      <inertia ixx="3.60647e-06" ixy="7.11575e-09" ixz="1.99525e-08" iyy="3.37607e-06" iyz="-6.46662e-07" izz="8.86231e-07"/>
+    </inertial>
+    <!-- Part camera_support -->
+    <visual>
+      <origin xyz="0.0130808 0.0624331 -0.01625" rpy="-1.5708 4.8233e-16 0.0308448"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//camera_support.stl"/>
+      </geometry>
+      <material name="camera_support_material">
+        <color rgba="0.996078 0.996078 1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0130808 0.0624331 -0.01625" rpy="-1.5708 4.8233e-16 0.0308448"/>
+      <geometry>
+        <mesh filename="file://$(find arm_assembly_description)/meshes//camera_support.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- Joint from motor_bracket to camera_support -->
+  <joint name="camera_pitch" type="revolute">
+    <origin xyz="-0.01625 0 -0.03825" rpy="-1.00305e-15 -1.5708 0"/>
+    <parent link="motor_bracket"/>
+    <child link="camera_support"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-2.12524" upper="2.06355"/>
+  </joint>
+
+  <!-- Joint from servo_to_extrusion_mount to motor_bracket -->
+  <joint name="camera_roll" type="revolute">
+    <origin xyz="0.2895 0.023225 -0.02005" rpy="-1.5708 1.5708 0"/>
+    <parent link="servo_to_extrusion_mount"/>
+    <child link="motor_bracket"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-0.523599" upper="0.523599"/>
+  </joint>
+
+  <!-- Joint from motor_shaft to servo_to_extrusion_mount -->
+  <joint name="servo_horn_to_servo" type="revolute">
+    <origin xyz="0.177452 0.0224459 -0.0456137" rpy="1.53589 1.16031e-14 6.67793e-15"/>
+    <parent link="motor_shaft"/>
+    <child link="servo_to_extrusion_mount"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.14159" upper="1.5708"/>
+  </joint>
+
+  <!-- Joint from dcmotor to motor_shaft -->
+  <joint name="link1_to_base" type="revolute">
+    <origin xyz="-5.48685e-05 1.88019e-19 0.135" rpy="3.14159 -0 0"/>
+    <parent link="dcmotor"/>
+    <child link="motor_shaft"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-0.785398" upper="0.785398"/>
+  </joint>
+
+</robot>
