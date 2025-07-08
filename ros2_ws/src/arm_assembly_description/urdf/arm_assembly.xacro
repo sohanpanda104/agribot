@@ -7,6 +7,10 @@
 <xacro:include filename="$(find arm_assembly_description)/urdf/arm_assembly.gazebo" />
 
 
+  <!-- Base Link -->
+  <link name="base_link">
+  </link>
+
   <!-- Link dcmotor -->
   <link name="dcmotor">
     <inertial>
@@ -319,6 +323,13 @@
       </geometry>
     </collision>
   </link>
+
+  <!-- Joint from base_link to dcmotor -->
+  <joint name="dcmotor_to_base" type="fixed">
+    <parent link="base_link"/>
+    <child link="dcmotor"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
   
   <!-- Joint from motor_bracket to camera_support -->
   <joint name="camera_pitch" type="revolute">
