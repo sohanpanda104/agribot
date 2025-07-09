@@ -6,8 +6,11 @@
 <xacro:include filename="$(find arm_assembly_description)/urdf/arm_assembly.trans" />
 <xacro:include filename="$(find arm_assembly_description)/urdf/arm_assembly.gazebo" />
 
+<!-- Link world -->
+<link name="world">
+</link>
 
-  <!-- Base Link -->
+  <!-- Link Base -->
   <link name="base_link">
   </link>
 
@@ -323,13 +326,6 @@
       </geometry>
     </collision>
   </link>
-
-  <!-- Joint from base_link to dcmotor -->
-  <joint name="dcmotor_to_base" type="fixed">
-    <parent link="base_link"/>
-    <child link="dcmotor"/>
-    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-  </joint>
   
   <!-- Joint from motor_bracket to camera_support -->
   <joint name="camera_pitch" type="revolute">
@@ -365,6 +361,20 @@
     <child link="motor_shaft"/>
     <axis xyz="0 0 1"/>
     <limit effort="10" velocity="10" lower="-0.785398" upper="0.785398"/>
+  </joint>
+
+  <!-- Joint from base_link to dcmotor -->
+  <joint name="dcmotor_to_base" type="fixed">
+    <parent link="base_link"/>
+    <child link="dcmotor"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- Joint from world to base_link -->
+  <joint name="world_to_base" type="fixed">
+    <child link="base_link"/>
+    <parent link="world"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
   </joint>
 
 </robot>
