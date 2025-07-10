@@ -1,0 +1,3 @@
+[submodule "ros2_ws/src/gazebo_ackermann_steering_vehicle"]
+	path = ros2_ws/src/gazebo_ackermann_steering_vehicle
+	url = git@github.com:suraj1102/gazebo_ackermann_steering_vehicle.git
