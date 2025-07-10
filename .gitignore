@@ -9,3 +9,4 @@ ros2_ws/install/
 COLCON_IGNORE
 AMENT_IGNORE
 
+.vscode/settings.json
