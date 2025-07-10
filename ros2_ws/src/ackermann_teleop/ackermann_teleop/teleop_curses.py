@@ -37,9 +37,9 @@ class TeleopCursesNode(Node):
                 elif key == curses.KEY_DOWN:
                     self.velocity = max(-MAX_VELOCITY, self.velocity - VELOCITY_STEP)
                 elif key == curses.KEY_LEFT:
-                    self.steering = max(-MAX_STEERING, self.steering - STEERING_STEP)
-                elif key == curses.KEY_RIGHT:
                     self.steering = min(MAX_STEERING, self.steering + STEERING_STEP)
+                elif key == curses.KEY_RIGHT:
+                    self.steering = max(-MAX_STEERING, self.steering - STEERING_STEP)
                 elif key == ord(' '):  # spacebar
                     self.steering = 0.0
                     self.velocity = 0.0
