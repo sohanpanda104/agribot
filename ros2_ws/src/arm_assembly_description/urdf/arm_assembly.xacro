@@ -371,7 +371,7 @@
   </joint>
 
   <!-- Joint from world to base_link -->
-  <joint name="world_to_base" type="fixed">
+  <joint name="base_to_world" type="fixed">
     <child link="base_link"/>
     <parent link="world"/>
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
