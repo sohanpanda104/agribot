@@ -1,9 +1,11 @@
 import os
+import yaml
 import rclpy
 from rclpy.node import Node
 from rcl_interfaces.srv import GetParameters
 from rcl_interfaces.msg import ParameterType
 import xml.etree.ElementTree as ET
+from ament_index_python.packages import get_package_share_directory
 
 
 class URDFCombiner(Node):
@@ -58,7 +60,7 @@ class URDFCombiner(Node):
         for tag in ['link', 'joint']:
             for elem in arm_root.findall(tag):
                 name = elem.attrib.get('name', '')
-                if name in ['world', 'base_link', 'world_to_base', 'dcmotor_to_base']:
+                if name in ['world', 'base_link', 'base_to_world', 'dcmotor_to_base']:
                     arm_root.remove(elem)
 
         # Add custom joint to connect dcmotor (from arm) to base_link (from vehicle)
@@ -71,8 +73,27 @@ class URDFCombiner(Node):
         child_elem = ET.SubElement(new_joint, 'child')
         child_elem.attrib['link'] = 'dcmotor'
         origin_elem = ET.SubElement(new_joint, 'origin')
-        origin_elem.attrib['xyz'] = "0 0 0"
-        origin_elem.attrib['rpy'] = "0 0 0"
+
+
+        # Use the dimensions of the vehicle to place the arm appropriately
+        vehicle_dir = get_package_share_directory('gazebo_ackermann_steering_vehicle')
+        vehicle_config_path = os.path.join(vehicle_dir, 'config', 'parameters.yaml')
+
+        # Load the YAML file
+        with open(vehicle_config_path, 'r') as f:
+            data = yaml.safe_load(f)
+
+        # Extract parameters
+        params = data.get('/**', {}).get('ros__parameters', {})
+
+        # Get specific values
+        body_length = params.get('body_length')
+        body_width = params.get('body_width')
+        body_height = params.get('body_height')
+        wheel_radius = params.get('wheel_radius')
+
+        origin_elem.attrib['xyz'] = f"{(-body_length/2) - 0.1} {(-body_width/2) - 0.05} {body_height + wheel_radius + 0.05}"
+        origin_elem.attrib['rpy'] = f"0 0 -1.57079632679"
 
         # Append the cleaned arm links and joints to the vehicle root
         for elem in arm_root:

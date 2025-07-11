@@ -63,15 +63,17 @@ def generate_launch_description():
         ]
     )
 
+    ugv_description_content = Command([
+        FindExecutable(name='xacro'), ' ', urdf_path
+    ])
+
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
         namespace='ugv',
         parameters=[
-            {'robot_description': Command([
-                FindExecutable(name='xacro'), ' ', urdf_path
-            ])},
+            {'robot_description': ugv_description_content},
         ],
         output='screen'
     )
@@ -103,6 +105,10 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         name='rviz2',
+        namespace='ugv',
+        parameters=[{
+        'robot_description': ugv_description_content
+        }],
         arguments=['-d', rviz_config_file],
         output='screen'
     )
