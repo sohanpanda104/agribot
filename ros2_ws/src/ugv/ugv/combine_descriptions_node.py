@@ -58,7 +58,7 @@ class URDFCombiner(Node):
         for tag in ['link', 'joint']:
             for elem in arm_root.findall(tag):
                 name = elem.attrib.get('name', '')
-                if name in ['world', 'base_link', 'base_to_world', 'dcmotor_to_base']:
+                if name in ['world', 'base_link', 'world_to_base', 'dcmotor_to_base']:
                     arm_root.remove(elem)
 
         # Add custom joint to connect dcmotor (from arm) to base_link (from vehicle)

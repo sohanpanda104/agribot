@@ -1,4 +1,5 @@
 import os
+import xacro
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -6,6 +7,7 @@ from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import Command, FindExecutable
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
@@ -16,6 +18,11 @@ def generate_launch_description():
     vehicle_ns = LaunchConfiguration('vehicle_ns')
     arm_ns = LaunchConfiguration('arm_ns')
 
+    share_dir = get_package_share_directory('arm_assembly_description')
+    rviz_config_file = os.path.join(share_dir, 'config', 'display.rviz')
+
+    config_dir = os.path.join(os.path.expanduser('~'), '.ugv')
+    urdf_path = os.path.join(config_dir, 'combined.urdf')
 
     # Include the ackermann vehicle launch
     ackermann_launch = IncludeLaunchDescription(
@@ -56,21 +63,49 @@ def generate_launch_description():
         ]
     )
 
-    config_dir = os.path.join(os.path.expanduser('~'), '.ugv')
-    urdf_path = os.path.join(config_dir, 'combined.urdf')
-
-    # Read the URDF content
-    with open(urdf_path, 'r') as urdf_file:
-        urdf_content = urdf_file.read()
-
-    ugv_rsp = Node(
+    robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        name='combined_state_publisher',
+        name='robot_state_publisher',
         namespace='ugv',
-        parameters=[{'robot_description': urdf_content}],
+        parameters=[
+            {'robot_description': Command([
+                FindExecutable(name='xacro'), ' ', urdf_path
+            ])},
+        ],
         output='screen'
-        )
+    )
+
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        namespace='ugv',
+    )
+
+    joint_state_publisher_gui_node = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        name='joint_state_publisher_gui',
+        namespace='ugv',
+    )
+
+    combined_description = TimerAction(
+        period=1.5,  # Wait for combiner_node to finish
+        actions=[
+            robot_state_publisher,
+            # joint_state_publisher_node, # Only need one of the two jsp nodes
+            joint_state_publisher_gui_node,
+        ]
+    )
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config_file],
+        output='screen'
+    )
 
     return LaunchDescription([
         vehicle_ns_arg, arm_ns_arg,
@@ -78,5 +113,6 @@ def generate_launch_description():
         ackermann_launch,
         arm_launch,
         combiner_node,
-        ugv_rsp
+        combined_description,
+        rviz_node,
     ])
