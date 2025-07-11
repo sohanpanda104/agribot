@@ -1,0 +1,92 @@
+
+
+
+* Wiring:
+
+  ```
+  MPU9250    ->   RPi GPIO
+  VCC        ->   3.3V (Pin 1)
+  GND        ->   GND (Pin 6)
+  SDA        ->   SDA1 (GPIO 2, Pin 3)
+  SCL        ->   SCL1 (GPIO 3, Pin 5)
+  ```
+
+---
+
+### ✅ **Software Requirements**
+
+Run these commands to install dependencies:
+
+```bash
+sudo apt update
+sudo apt install python3-pip i2c-tools python3-smbus
+pip3 install mpu9250-jmdev
+```
+
+Enable I2C:
+
+```bash
+sudo raspi-config
+# Go to Interface Options -> I2C -> Enable
+```
+
+Then reboot:
+
+```bash
+sudo reboot
+```
+
+Check if MPU9250 is detected:
+
+```bash
+i2cdetect -y 1
+# You should see something like 0x68 or 0x69
+```
+
+---
+
+### ✅ **Python Code using `mpu9250-jmdev` Library**
+
+```python
+from mpu9250_jmdev.registers import *
+from mpu9250_jmdev.mpu_9250 import MPU9250
+import time
+
+# Initialize the MPU9250
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,       # Magnetometer
+    address_mpu_master=MPU9050_ADDRESS_68,  # Gyro + Accel
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_250,      # Gyroscope full scale range
+    afs=AFS_2G,       # Accelerometer full scale range
+    mfs=AK8963_BIT_16,  # Magnetometer resolution
+    mode=AK8963_MODE_C100HZ)  # Magnetometer data rate
+
+mpu.calibrate()  # Optional
+mpu.configure()
+
+# Read sensor data
+while True:
+    accel = mpu.readAccelerometerMaster()
+    gyro = mpu.readGyroscopeMaster()
+    mag = mpu.readMagnetometerMaster()
+    temp = mpu.readTemperatureMaster()
+
+    print(f"Accel: {accel}")
+    print(f"Gyro : {gyro}")
+    print(f"Mag  : {mag}")
+    print(f"Temp : {temp:.2f} °C")
+    print("-" * 30)
+    time.sleep(1)
+```
+
+---
+
+### 🔧 **Troubleshooting**
+
+* If `i2cdetect` shows nothing, check:
+
+  * Wiring
+  * Correct I2C address (some boards use `0x68`, others `0x69`)
+  * I2C enabled in `raspi-config`
