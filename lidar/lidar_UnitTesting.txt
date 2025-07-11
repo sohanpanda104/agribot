@@ -1,0 +1,121 @@
+
+## 🎯 What You'll Get:
+
+✅ Live 2D animation (radar-style)
+✅ Real-time scan data
+✅ Optional: save obstacle data to a file (CSV)
+
+---
+
+## ✅ 1. Install Required Libraries (If not done yet)
+
+Run these in Terminal:
+
+```bash
+sudo apt update
+sudo apt install python3-pip
+pip3 install rplidar matplotlib
+```
+
+---
+
+## ✅ 2. Full Python Code (`lidar_bot_visualize.py`)
+
+> 📝 Save this to your Pi:
+> `nano lidar_bot_visualize.py`
+> Paste the code below, then press `Ctrl + O` → Enter → `Ctrl + X` to save and exit.
+
+```python
+import matplotlib.pyplot as plt
+import math
+from rplidar import RPLidar
+import datetime
+import csv
+
+# === SETTINGS ===
+PORT = '/dev/ttyUSB0'  # Change if needed
+SAVE_DATA = True       # Set to False if you don't want to save
+DATA_FILE = f"lidar_data_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+
+# === INIT LIDAR ===
+lidar = RPLidar(None, PORT)
+print("LIDAR Info:", lidar.get_info())
+print("Health:", lidar.get_health())
+
+# === INIT CSV FILE ===
+if SAVE_DATA:
+    csvfile = open(DATA_FILE, 'w', newline='')
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(['Angle (deg)', 'Distance (mm)', 'X (mm)', 'Y (mm)'])
+
+# === INIT PLOT ===
+plt.ion()
+fig, ax = plt.subplots(figsize=(6, 6))
+scatter = ax.scatter([], [], s=2, c='blue')
+ax.set_xlim(-6000, 6000)
+ax.set_ylim(-6000, 6000)
+ax.set_xlabel('X (mm)')
+ax.set_ylabel('Y (mm)')
+ax.set_title('RPLIDAR A1M8 - Live Scan')
+ax.grid(True)
+
+# === SCANNING LOOP ===
+try:
+    for scan in lidar.iter_scans():
+        xs, ys = [], []
+        for (_, angle, distance) in scan:
+            if distance == 0:
+                continue  # Ignore invalid
+            angle_rad = math.radians(angle)
+            x = distance * math.cos(angle_rad)
+            y = distance * math.sin(angle_rad)
+            xs.append(x)
+            ys.append(y)
+            if SAVE_DATA:
+                csvwriter.writerow([angle, distance, x, y])
+
+        scatter.set_offsets(list(zip(xs, ys)))
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+
+except KeyboardInterrupt:
+    print("Stopping...")
+
+finally:
+    print("Cleaning up...")
+    lidar.stop()
+    lidar.disconnect()
+    if SAVE_DATA:
+        csvfile.close()
+    plt.close()
+```
+
+---
+
+## ✅ 3. Run the Bot
+
+In terminal:
+
+```bash
+python3 lidar_bot_visualize.py
+```
+
+You should see:
+
+* A **live radar-style animation** of the scan
+* Obstacles or objects will show up as **clusters of points**
+* Output CSV file saved in current directory (if enabled)
+
+---
+
+## 🛠️ Notes
+
+* If permission denied:
+
+  ```bash
+  sudo usermod -a -G dialout $USER
+  sudo reboot
+  ```
+* You can open the CSV in Excel or Python (`pandas`) for analysis
+
+
