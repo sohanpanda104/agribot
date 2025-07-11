@@ -1,0 +1,160 @@
+
+
+## 🧭 Step-by-Step: RPLiDAR A1M8 with Raspberry Pi 4 (USB)
+
+---
+
+### 🟢 **STEP 1: Plug in the RPLiDAR**
+
+* Connect the **RPLiDAR A1M8** to your Raspberry Pi 4 using the **USB cable** that comes with it.
+
+  * You’ll see the motor spin slowly when it powers up.
+
+---
+
+### 🔍 **STEP 2: Check if RPi Detects It**
+
+Open the Terminal and type:
+
+```bash
+ls /dev/ttyUSB*
+```
+
+✅ If it's connected, you will see something like:
+
+```
+/dev/ttyUSB0
+```
+
+❌ If you see nothing, try:
+
+```bash
+dmesg | grep tty
+```
+
+Look for a line like:
+
+```
+... now attached to ttyUSB0
+```
+
+---
+
+### ⚙️ **STEP 3: Give Yourself USB Access (only once)**
+
+Run:
+
+```bash
+sudo usermod -a -G dialout $USER
+```
+
+Then **reboot**:
+
+```bash
+sudo reboot
+```
+
+---
+
+### 📦 **STEP 4: Install Required Packages**
+
+After reboot, open Terminal again:
+
+```bash
+sudo apt update
+sudo apt install python3-pip git cmake g++ libusb-1.0-0-dev
+```
+
+---
+
+### 📁 **STEP 5: Download the RPLiDAR SDK**
+
+```bash
+cd ~
+git clone https://github.com/Slamtec/rplidar_sdk.git
+```
+
+---
+
+### 🛠️ **STEP 6: Build the Demo Program**
+
+```bash
+cd ~/rplidar_sdk/sdk
+mkdir build
+cd build
+cmake ..
+make
+```
+
+If successful, the demo will be created in:
+
+```
+~/rplidar_sdk/output/Linux/Release
+```
+
+---
+
+### 🧪 **STEP 7: Run the LIDAR Demo**
+
+Now run this command:
+
+```bash
+cd ~/rplidar_sdk/output/Linux/Release
+./rplidar_sdk_demo /dev/ttyUSB0
+```
+
+✅ If working, you’ll see:
+
+```
+RPLIDAR S/N: ...
+Firmware Ver: ...
+Detected 360 points...
+```
+
+❌ If error, check:
+
+* Is it `/dev/ttyUSB0`? (If not, replace with correct one)
+* Is LIDAR spinning?
+* Did you reboot after `usermod`?
+
+---
+
+### 🐍 **OPTIONAL: Use in Python**
+
+1. Install the Python package:
+
+```bash
+pip3 install rplidar
+```
+
+2. Run this Python code:
+
+```python
+from rplidar import RPLidar
+
+lidar = RPLidar(None, '/dev/ttyUSB0')
+
+info = lidar.get_info()
+print(info)
+
+for scan in lidar.iter_scans():
+    print(scan)
+    break
+
+lidar.stop()
+lidar.disconnect()
+```
+
+You should see output like:
+
+```
+('RPLIDAR A1', 'firmware version', etc.)
+[(quality, angle, distance), ...]
+```
+
+---
+
+### ✅ Done!
+
+You’ve now connected and read data from the **RPLiDAR A1M8** on your **Raspberry Pi 4** via **USB**.
+
