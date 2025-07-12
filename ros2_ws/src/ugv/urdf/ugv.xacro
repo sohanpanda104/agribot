@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<robot name="ugv" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:include filename="$(find ugv)/urdf/materials.xacro" />
+<xacro:include filename="$(find ugv)/urdf/vehicle.xacro" />
+<xacro:include filename="$(find ugv)/urdf/arm_assembly.xacro" />
+
+
+<joint name="arm_to_vehicle" type="fixed">
+    <origin xyz="-${(body_length / 2.0) + 0.1} -${(body_width / 2.0) + 0.05} ${body_height + wheel_radius + 0.05}" rpy="0 0 -1.57079632679"/>
+    <parent link="body_link"/>
+    <child link="dcmotor"/>
+</joint>
+
+<xacro:include filename="$(find ugv)/urdf/ugv.trans" />
+<xacro:include filename="$(find ugv)/urdf/ugv.gazebo" />
+
+</robot>

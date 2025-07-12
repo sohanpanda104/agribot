@@ -1,0 +1,62 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+    use_sim_time: true
+
+    # Add these timeout parameters
+    controller_manager_timeout: 10.0
+    activate_controllers_timeout: 10.0
+
+    forward_velocity_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    forward_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - link1_to_base
+      - servo_horn_to_servo
+      - camera_roll
+      - camera_pitch
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    # Add timeout for trajectory execution
+    action_server_timeout: 10.0
+
+forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - rear_left_wheel_joint
+      - rear_right_wheel_joint
+    interface_name: velocity
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+
+forward_position_controller:
+  ros__parameters:
+    joints:
+      - front_left_steering_joint
+      - front_right_steering_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
