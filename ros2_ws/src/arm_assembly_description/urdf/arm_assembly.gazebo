@@ -4,7 +4,11 @@
 <xacro:property name="body_color" value="Gazebo/Silver" />
 
 <gazebo>
-  <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+  <plugin name="arm_control" filename="libgazebo_ros2_control.so">
+    <ros>
+        <namespace>/</namespace>
+        <node_name>arm_gz_control</node_name>
+    </ros>
     <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
     <parameters>$(find arm_assembly_description)/config/controller.yaml</parameters>
   </plugin>

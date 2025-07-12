@@ -1,7 +1,7 @@
 import os
 import xacro
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
@@ -63,17 +63,16 @@ def generate_launch_description():
         ]
     )
 
-    ugv_description_content = Command([
-        FindExecutable(name='xacro'), ' ', urdf_path
-    ])
-
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
         namespace='ugv',
         parameters=[
-            {'robot_description': ugv_description_content},
+            {
+                'robot_description': Command([FindExecutable(name='xacro'), ' ', urdf_path]),
+                'use_sim_time': True,
+            },
         ],
         output='screen'
     )
@@ -96,8 +95,8 @@ def generate_launch_description():
         period=1.5,  # Wait for combiner_node to finish
         actions=[
             robot_state_publisher,
-            # joint_state_publisher_node, # Only need one of the two jsp nodes
-            joint_state_publisher_gui_node,
+            joint_state_publisher_node, # Only need one of the two jsp nodes
+            # joint_state_publisher_gui_node,
         ]
     )
 
@@ -106,10 +105,8 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         namespace='ugv',
-        parameters=[{
-        'robot_description': ugv_description_content
-        }],
         arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': True}],
         output='screen'
     )
 
