@@ -8,7 +8,7 @@
 
 
 <joint name="arm_to_vehicle" type="fixed">
-    <origin xyz="-${(body_length / 2.0) + 0.1} -${(body_width / 2.0) + 0.05} ${body_height + wheel_radius + 0.05}" rpy="0 0 -1.57079632679"/>
+    <origin xyz="-${(body_length / 2.0) - 0.1} -${(body_width / 2.0) - 0.05} ${body_height / 2.0}" rpy="0 0 -1.57079632679"/>
     <parent link="body_link"/>
     <child link="dcmotor"/>
 </joint>

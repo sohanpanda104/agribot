@@ -10,3 +10,5 @@ COLCON_IGNORE
 AMENT_IGNORE
 
 .vscode/settings.json
+.vscode/
+ros2_ws/test_combine_node.sh
