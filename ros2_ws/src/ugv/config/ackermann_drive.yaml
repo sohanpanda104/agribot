@@ -35,6 +35,11 @@ arm_controller:
 
 ackermann_steering_controller:
   ros__parameters:
+    odom_frame_id: "odom"
+    base_frame_id: "body_link" # this needs to be the link which has the wheel joints attached
+    enable_odom_tf: true # this isnt working for some reason and the odom->body_link frame is not published 
+    # in /tf, but only in ackermann_steering_controller/odometry so need to use robot_localization's ekf node to 
+    # republish this data
     # must match test config
     rear_wheels_names:
       - rear_left_wheel_joint

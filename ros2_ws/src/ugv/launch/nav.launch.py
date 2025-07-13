@@ -45,10 +45,14 @@ def load_robot_description(robot_description_path, vehicle_params_path):
 def generate_launch_description():
     pkg_ugv = get_package_share_directory('ugv')
     urdf_file = os.path.join(pkg_ugv, 'urdf', 'ugv.xacro')
-    params_file = os.path.join(pkg_ugv, 'config', 'parameters.yaml')
-    ctrl_yaml = os.path.join(pkg_ugv, 'config', 'gz_ros2_control.yaml')
+    vehicle_params_file = os.path.join(pkg_ugv, 'config', 'parameters.yaml')
+    ctrl_yaml = os.path.join(pkg_ugv, 'config', 'ackermann_drive.yaml')
 
-    robot_description = load_robot_description(urdf_file, params_file)
+    nav2_dir = get_package_share_directory('nav2_bringup')
+    nav2_params_file = os.path.join(pkg_ugv, 'config', 'nav2_params.yaml')
+    bt_file = os.path.join(nav2_dir, 'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
+
+    robot_description = load_robot_description(urdf_file, vehicle_params_file)
 
     # Gazebo server and client
     gazebo_server = IncludeLaunchDescription(
@@ -112,8 +116,37 @@ def generate_launch_description():
     )
 
 
-    spawn_controllers = TimerAction(
+    ekf_node = TimerAction(
+        period=4.0,
+        actions=[
+            Node(
+                package='robot_localization',
+                executable='ekf_node',
+                name='ekf_filter_node',
+                output='screen',
+                parameters=[os.path.join(pkg_ugv, 'config', 'ekf.yaml')]
+            )
+        ]
+    )
+
+    nav2 = TimerAction(
         period=5.0,
+        actions=[
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(os.path.join(nav2_dir, 'launch', 'bringup_launch.py')),
+                launch_arguments={
+                    'use_sim_time': 'true',
+                    'autostart': 'true',
+                    'params_file': nav2_params_file,
+                    'bt_xml_file': bt_file,
+                    'map': os.path.join(pkg_ugv, 'maps', '5x5.yaml')
+                }.items()
+            )
+        ]
+    )
+
+    spawn_controllers = TimerAction(
+        period=6.0,
         actions=[
             Node(
                 package='controller_manager',
@@ -149,5 +182,7 @@ def generate_launch_description():
         urdf_spawn_node,
 
         control_manager,
+        ekf_node,
+        # nav2,
         spawn_controllers,
     ])

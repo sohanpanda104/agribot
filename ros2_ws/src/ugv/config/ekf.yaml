@@ -1,0 +1,23 @@
+ekf_filter_node:
+  ros__parameters:
+    frequency: 50.0
+
+    # Frames
+    map_frame: map              # Optional
+    odom_frame: odom
+    base_link_frame: body_link  # <- Set to body_link instead of base_link
+    world_frame: odom           # usually same as odom_frame
+
+    two_d_mode: true            # Likely for ground robot
+
+    publish_tf: true
+    publish_acceleration: false
+
+    # Odometry input
+    odometry0: /ackermann_steering_controller/odometry
+    odometry0_config: [true,  true,  false,
+                       false, false, false,
+                       true,  true,  false,
+                       false, false, false]
+    odometry0_differential: false
+    odometry0_relative: false
