@@ -5,6 +5,7 @@ bags/
 .env
 
 .DS_Store
+UAV\ RGB\ Images/
 
 # Colcon custom files
 COLCON_IGNORE
