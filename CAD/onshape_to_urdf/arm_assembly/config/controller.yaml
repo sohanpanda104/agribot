@@ -1,0 +1,28 @@
+controller_manager:
+  ros__parameters:
+    use_sim_time: true
+    update_rate: 100
+    # Add these timeout parameters
+    controller_manager_timeout: 10.0
+    activate_controllers_timeout: 10.0
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - link1_to_base
+      - servo_horn_to_servo
+      - camera_roll
+      - camera_pitch
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    # Add timeout for trajectory execution
+    action_server_timeout: 10.0
