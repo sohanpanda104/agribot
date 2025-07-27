@@ -3,6 +3,7 @@ ros2_ws/log/
 ros2_ws/install/
 
 .DS_Store
+UAV\ RGB\ Images/
 
 # Colcon custom files
 COLCON_IGNORE
