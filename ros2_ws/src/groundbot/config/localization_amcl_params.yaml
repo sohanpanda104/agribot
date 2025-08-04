@@ -1,0 +1,22 @@
+amcl:
+  ros__parameters:
+    # Laser scan topic that AMCL listens to
+    scan_topic: '/scan'
+    map_topic: '/map'
+    # Frame IDs
+    base_frame_id: 'base_link'
+    odom_frame_id: 'odom'
+    global_frame_id: 'map'
+    transform_tolerance: 0.5
+    tf_broadcast: true  # to publish map→odom
+bt_navigator:
+  ros__parameters:
+    # Nav2’s internal odometry topic reference
+    odom_topic: 'odom'
+    global_frame: 'map'
+    robot_base_frame: 'base_link'
+
+map_server:
+  ros__parameters:
+    use_sim_time: false
+    yaml_filename: "/home/suraj/agribot/ros2_ws/src/groundbot/maps/on_table.yaml"
