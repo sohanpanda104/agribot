@@ -25,6 +25,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'topic_client = groundbot.topic_client:main',
+            'odom_tf_broadcaster = groundbot.odom_tf_broadcaster:main',
+            'laser_tf_broadcaster = groundbot.laser_tf_broadcaster:main'
         ],
     },
 )
