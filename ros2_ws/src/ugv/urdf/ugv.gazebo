@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:property name="body_color" value="Gazebo/Silver" />
+
+<!-- Vehicle Plugins -->
+<gazebo>
+  <!-- Vehicle ROS 2 Control Plugin -->
+  <plugin name="ControlSystem" filename="libgazebo_ros2_control.so">
+    <ros>
+      <namespace>/</namespace>
+      <node_name>ros2_gz_control</node_name>
+    </ros>
+    <robotSimType>gazebo_ros2_control/GazeboSystem</robotSimType>
+    <parameters>$(find ugv)/config/gz_ros2_control.yaml</parameters>
+  </plugin>
+</gazebo>
+
+
+<!-- Camera Sensor Plugin -->
+<gazebo reference="camera_link">
+  <sensor type="camera" name="vehicle_front_camera">
+    <update_rate>${camera_fps}</update_rate>
+    <visualize>true</visualize>
+    <camera name="head">
+      <horizontal_fov>${camera_fov}</horizontal_fov>
+      <image>
+        <width>${image_width}</width>
+        <height>${image_height}</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.02</near>
+        <far>300</far>
+      </clip>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.007</stddev>
+      </noise>
+    </camera>
+
+    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>${camera_fps}</updateRate>
+      <cameraName>vehicle_front_camera</cameraName>
+      <frameName>camera_link</frameName>
+      <robotNamespace>/</robotNamespace>
+      <hackBaseline>0.07</hackBaseline>
+      <distortionK1>0.0</distortionK1>
+      <distortionK2>0.0</distortionK2>
+      <distortionK3>0.0</distortionK3>
+      <distortionT1>0.0</distortionT1>
+      <distortionT2>0.0</distortionT2>
+    </plugin>
+  </sensor>
+</gazebo>
+
+
+<!-- From Arm -->
+<gazebo reference="dcmotor">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <self_collide>true</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="motor_shaft">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <self_collide>true</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="servo_to_extrusion_mount">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <self_collide>true</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="motor_bracket">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <self_collide>true</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="camera_support">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <self_collide>true</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="link1_to_base">
+  <provideFeedback>true</provideFeedback>
+</gazebo>
+
+
+<!-- From Vehicle -->
+<gazebo reference="body_link">
+  <mu1>0.0001</mu1>
+  <mu2>0.0001</mu2>
+</gazebo>
+
+<gazebo reference="front_right_wheel_link">
+  <mu1>100.0</mu1>
+  <mu2>100.0</mu2>
+</gazebo>
+
+<gazebo reference="front_left_wheel_link">
+  <mu1>100.0</mu1>
+  <mu2>100.0</mu2>
+</gazebo>
+  
+<gazebo reference="rear_right_wheel_link">
+  <mu1>100.0</mu1>
+  <mu2>100.0</mu2>
+</gazebo>
+
+<gazebo reference="rear_left_wheel_link">
+  <mu1>100.0</mu1>
+  <mu2>100.0</mu2>
+</gazebo>
+
+
+</robot>

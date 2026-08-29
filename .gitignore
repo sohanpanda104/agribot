@@ -1,12 +1,27 @@
 ros2_ws/build/
 ros2_ws/log/
 ros2_ws/install/
+bags/
 .env
 
 .DS_Store
+.vscode/
 UAV\ RGB\ Images/
 
 # Colcon custom files
 COLCON_IGNORE
 AMENT_IGNORE
 
+ros2_ws/test_combine_node.sh
+ros2_ws/rosbag2_2025_08_06-03_01_25/
+
+# Aerial Imagery Datasets
+ImagesToMaps/aerial_analysis
+ImagesToMaps/aerial_analysis.zip
+ImagesToMaps/asmauli_small
+ImagesToMaps/lab
+ImagesToMaps/lab_office
+ImagesToMaps/large
+ImagesToMaps/outside_lab
+ImagesToMaps/smart_farm
+ImagesToMaps/UAV RGB Images

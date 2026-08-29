@@ -1,0 +1,8 @@
+{
+    "url": "https://cad.onshape.com/documents/546304ee70c86541f8af77ea/w/7238eedaa03893e5b72f0f9f/e/416e6f2086909e88cdb82d5e",
+    "output_format": "urdf",
+    "output_filename": "arm_assembly",
+    "robot_name": "arm",
+    "include_configuration_suffix": false,
+    "assets_dir": "meshes"
+}
